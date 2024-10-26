@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
+
 from pydantic import BaseModel
 
 app = FastAPI()
