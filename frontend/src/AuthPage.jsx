@@ -13,18 +13,27 @@ const AuthPage = (props) => {
 
     return (
         <div className="background">
+            <style>
+                {`
+                .auth-input::placeholder,
+                .auth-password::placeholder {
+                    color: rgb(175, 175, 175); /* Placeholder text color */
+                    font-family: Avenir; /* Placeholder text font */
+                }
+                `}
+            </style>
             <form onSubmit={onSubmit} className="form-card">
                 <div className="form-title">
                     Welcome To Coffeetalk ☕
                 </div>
 
                 <div className="form-subtitle">
-                    Set a username to begin
+                    Set a username and password to begin
                 </div>
 
                 <div className="auth">
-                    <div className="auth-label">Username</div>
-                    <input className="auth-input" name="username" />
+                    <input className="auth-input" name="username" placeholder="Username" />
+                    <input className="auth-password" name="password" placeholder="Password" />
                     <button className="auth-button" type="submit">Enter</button>
                     <button className="about-button" type="creators">About Creators</button>
                 </div>
