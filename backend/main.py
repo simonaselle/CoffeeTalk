@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
 from pydantic import BaseModel
-from bcrypt import bcrypt
+import bcrypt
 
 app = FastAPI()
 
@@ -14,16 +14,21 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# File to store the data 
+# File to store the data (user credentials)
 usersFile = "users.tdxt"
 
-# 
-hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-
+# class to define the user model (username and password)
 class User(BaseModel):
     username: str
     password: str
 
+# creating a function to hash the password using user input and bcrypt
+def hash_password(password: str):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()) #hash the password
+
+# creating a function to verify the password with the hashed password
+def verify_password(password: str, hashed_password: str):
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
 
 @app.post("/authenticate")
 async def authenticate(user: User):
