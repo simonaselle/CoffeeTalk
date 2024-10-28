@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
-
 from pydantic import BaseModel
 
 app = FastAPI()
 
+# Allow all origins to access the server (frontend -> backend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,12 +13,14 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# File to store the data 
+usersFile = "users.txt"
+
+
 class User(BaseModel):
     username: str
     password: str
 
-# In-memory storage for demonstration purposes
-users_db = {}
 
 @app.post("/authenticate")
 async def authenticate(user: User):
