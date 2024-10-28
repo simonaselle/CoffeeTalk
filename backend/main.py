@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
 from pydantic import BaseModel
+from bcrypt import bcrypt
 
 app = FastAPI()
 
@@ -14,8 +15,10 @@ app.add_middleware(
 )
 
 # File to store the data 
-usersFile = "users.txt"
+usersFile = "users.tdxt"
 
+# 
+hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 
 class User(BaseModel):
     username: str
