@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
 from pydantic import BaseModel
-import bcrypt
+from Bcrypt import Bcrypt
 
 app = FastAPI()
 
@@ -44,12 +44,32 @@ def authenticateUser(username: User, password: str):
                 return True
     return # otherwise return false 
 
-@app.post("/authenticate")
-async def authenticate(user: User):
-    # Save the user data in the in-memory storage
-    users_db[user.username] = user.password
-    return {"message": f"User {user.username} authenticated and saved successfully"}
+# need a register method to connect to the frontend 
+@app.post("/register")
+async def register(user: User): # register method that takes the user data
+    if authenticateUser(user.username, user.password): # check if the user is already registered
+        return {"message": "User already regestered"} # if the user is already registered, return a message that the user is already registered
+    else:
+        saveUser(user) # save the user data in the file
+        return {"message": f"User {user.username} registered successfully"} # return a message that the user is registered successfully
 
+# authenticate method that connects to the frontend 
+@app.post("/authenticate") # 
+async def authenticate(user: User):
+    if not authenticateUser(user.username, user.password): # check if the user is in the file and matches whats in the file 
+        return {"message": "Invalid username or password"}
+    else: 
+        return {"message": f"User {user.username} authenticated and saved successfully"}
+
+# getting the user that connects to the frontend 
 @app.get("/users")
 async def get_users():
-    return users_db
+    users = [] # empty list to store the users
+    try: # use try block to handle the exception of not finding the file
+        with open(usersFile, "r") as f: # open the file in read mode 'r'
+            for line in f:
+                username, _ = line.strip().split("") # split the username and password with a space 
+                users.append(username) # append the username to the list
+    except FileNotFoundError: # if the file is not found, pass
+        pass 
+    return {"users": users} # return the list of users
