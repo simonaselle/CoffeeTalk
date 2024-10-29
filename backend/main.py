@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # File to store the data (user credentials)
-usersFile = "users.tdxt"
+usersFile = "users.txt"
 
 # class to define the user model (username and password)
 class User(BaseModel):
