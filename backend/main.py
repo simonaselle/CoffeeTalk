@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # File to store the data (user credentials)
-usersFile = "users.txt"
+usersFile = "backend/users.txt"
 
 # class to define the user model (username and password)
 class User(BaseModel):
@@ -27,22 +27,22 @@ def hash_password(password: str):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()) #hash the password
 
 # creating a function to verify the password with the hashed password
-def verifyPassword(password: str, hashed_password: str):
+def verifyPassword(password: str, hashed_password: bytes):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
 
 # creating a function to save the user data in the file
-def saveUser(username: User):
+def saveUser(user: User):
     with open(usersFile, "a") as f: #open the file in append; append mode is used to add the data to the end of the file
-        f.write(f"{username.username},{hash_password(username.password).decode()}\n") # write the username and hashed password in the file
+        f.write(f"{user.username},{hash_password(user.password).decode()}\n") # write the username and hashed password in the file
 
 # creating a function to read the user data from the file (authenticating the user)
-def authenticateUser(username: User, password: str):
+def authenticateUser(username: str, password: str):
     with open(usersFile, "r") as f: # opening the file in read mode 'r' 
         for line in f: # iterating through the file 
-            username, hashed_password = line.strip().split("") # reading the user's credentials and splitting with a space 
-            if username == username.username and verifyPassword(password, hashed_password): # check if the username and password match
-                return True
-    return # otherwise return false 
+            storedUsername, storedHashedPassword = line.strip().split("") # reading the user's credentials and splitting with a space 
+            if storedUsername == username and verifyPassword(password, storedHashedPassword.encode()): # check if the username and password match the stored credentials
+                return True # return true if the user is authenticated
+    return False # otherwise return false 
 
 # need a register method to connect to the frontend 
 @app.post("/register")
