@@ -62,7 +62,7 @@ async def authenticate(user: User):
         return {"message": f"User {user.username} authenticated and saved successfully"}
 
 # getting the user that connects to the frontend 
-@app.get("/users")
+@app.post("/users")
 async def get_users():
     users = [] # empty list to store the users
     try: # use try block to handle the exception of not finding the file
