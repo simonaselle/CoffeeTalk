@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #can call this server from any other website 
 from pydantic import BaseModel
-from Bcrypt import Bcrypt
+import bcrypt
 
 app = FastAPI()
 
