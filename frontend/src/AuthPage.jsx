@@ -33,7 +33,7 @@ const AuthPage = (props) => {
 
                 <div className="auth">
                     <input className="auth-input" name="username" placeholder="Username" />
-                    <input className="auth-password" name="password" placeholder="Password" />
+                    <input className="auth-password" name="password" type ="password" id="password" placeholder="Password" />
                     <button className="auth-button" type="submit">Enter</button>
                     <button className="about-button" type="creators">About Creators</button>
                 </div>
