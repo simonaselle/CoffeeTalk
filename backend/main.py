@@ -48,7 +48,7 @@ def authenticateUser(username: str, password: str):
 @app.post("/register")
 async def register(user: User): # register method that takes the user data
     if authenticateUser(user.username, user.password): # check if the user is already registered
-        return {"message": "User already regestered"} # if the user is already registered, return a message that the user is already registered
+        return {"message": "User already registered"} # if the user is already registered, return a message that the user is already registered
     else:
         saveUser(user) # save the user data in the file
         return {"message": f"User {user.username} registered successfully"} # return a message that the user is registered successfully
