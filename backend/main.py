@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 # File to store the data (user credentials)
-usersFile = "backend/users.txt"
+usersFile = "users.txt"
 
 # class to define the user model (username and password)
 class User(BaseModel):
@@ -39,7 +39,7 @@ def saveUser(user: User):
 def authenticateUser(username: str, password: str):
     with open(usersFile, "r") as f: # opening the file in read mode 'r' 
         for line in f: # iterating through the file 
-            storedUsername, storedHashedPassword = line.strip().split("") # reading the user's credentials and splitting with a space 
+            storedUsername, storedHashedPassword = line.strip().split(" ") # reading the user's credentials and splitting with a space 
             if storedUsername == username and verifyPassword(password, storedHashedPassword.encode()): # check if the username and password match the stored credentials
                 return True # return true if the user is authenticated
     return False # otherwise return false 
@@ -68,7 +68,7 @@ async def get_users():
     try: # use try block to handle the exception of not finding the file
         with open(usersFile, "r") as f: # open the file in read mode 'r'
             for line in f:
-                username, _ = line.strip().split("") # split the username and password with a space 
+                username, password = line.strip().split(" ") # split the username and password with a space 
                 users.append(username) # append the username to the list
     except FileNotFoundError: # if the file is not found, pass
         pass 

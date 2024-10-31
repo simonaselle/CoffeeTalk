@@ -3,12 +3,16 @@ import axios from "axios";
 const AuthPage = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
-        const { value } = e.target[0];
+        const username = e.target.username.value;
+        const password = e.target.password.value;
         axios.post(
-            'http://localhost:3001/authenticate',
-            { username: value }
-        )
-        props.onAuth({ username: value, secret: value })
+            'http://localhost:8000/authenticate',
+            { username, password }
+        ).then(() => {
+            props.onAuth({ username, secret: password });
+        }).catch((error) => {
+            console.error("Authentication failed:", error);
+        });
     }
 
     return (
