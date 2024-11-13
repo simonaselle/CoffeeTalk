@@ -17,33 +17,25 @@ const AuthPage = (props) => {
 
     return (
         <div className="background">
-            <style>
-                {`
-                .auth-input::placeholder,
-                .auth-password::placeholder {
-                    color: rgb(175, 175, 175); /* Placeholder text color */
-                    font-family: Avenir; /* Placeholder text font */
-                }
-                `}
-            </style>
-            <form onSubmit={onSubmit} className="form-card">
-                <div className="form-title">
-                    Welcome To Coffeetalk ☕
-                </div>
+            <div className="form-card">
+                <h1 className="main-heading">Welcome to CoffeeTalk☕</h1>
+                <form onSubmit={onSubmit}>
+                    <div className="form-subtitle">
+                        Set a Username and Password to get started.
+                        New User? Click "New User" to create an account.
+                    </div>
 
-                <div className="form-subtitle">
-                    Set a username and password to begin
-                </div>
-
-                <div className="auth">
-                    <input className="auth-input" name="username" placeholder="Username" />
-                    <input className="auth-password" name="password" type ="password" id="password" placeholder="Password" />
-                    <button className="auth-button" type="submit">Enter</button>
-                    <button className="about-button" type="creators">About Creators</button>
-                </div>
-            </form>
+                    <div className="auth">
+                        <input className="auth-input" name="username" placeholder="Username" />
+                        <input className="auth-password" name="password" type="password" id="password" placeholder="Password" />
+                        <button className="auth-button" type="submit">Enter</button>
+                        <button className="new-user-button" type="button">New User</button>
+                        <button className="about-button" type="button">About Creators</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
 
-export default AuthPage
+export default AuthPage;
