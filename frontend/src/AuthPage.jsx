@@ -8,10 +8,13 @@ const AuthPage = (props) => {
         axios.post(
             'http://localhost:8000/authenticate',
             { username, password }
-        ).then(() => {
+        )
+        .then((response) => {
             props.onAuth({ username, secret: password });
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.error("Authentication failed:", error);
+            alert("Invalid username or password.");
         });
     }
 
