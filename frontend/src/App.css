@@ -10,7 +10,7 @@ body {
 .background {
   width: 50vw;
   height: 100vh;
-  background: linear-gradient(75deg, rgb(20, 23, 33) 0%, rgb(20, 23, 33) 50%, rgba(20, 23, 33,0.8) 100%);
+  background: linear-gradient(75deg, rgb(94, 92, 92) 0%, rgb(94, 92, 92) 0%,rgb(94, 92, 92) 0%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@ body {
   width: 100%;
   max-width: 400px; /* Adjust the max-width as needed */
   padding: 20px;
-  background-color: rgba(6, 226, 255, 0.573); /* Optional: Add a slight background color for the form card */
+  background-color: rgba(102, 206, 57, 0.455); /* Optional: Add a slight background color for the form card */
   border-radius: 8px;
   text-align: center; /* Center the text inside the form card */
   display: flex;
@@ -29,7 +29,7 @@ body {
 }
 
 .main-heading {
-  color: rgb(19, 12, 12);
+  color: rgb(246, 246, 246);
   font-family: Avenir;
   font-size: 48px; /* Adjust the size as needed */
   text-align: center;
@@ -40,7 +40,7 @@ body {
   font-size: 18px;
   font-family: 'Avenir';
   letter-spacing: 0.5px;
-  color: #090101;
+  color: #cfbcbc;
   padding-bottom: 24px;
   text-align: center;
 }
@@ -87,8 +87,8 @@ body {
 .about-button,
 .new-user-button {
   padding: 10px;
-  background-color: #1c39e0;
-  color: white;
+  background-color: #9d9ea1;
+  color: rgb(255, 255, 255);
   font-family: "Avenir";
   border: none;
   border-radius: 4px;
@@ -100,7 +100,7 @@ body {
 .auth-button:hover,
 .about-button:hover,
 .new-user-button:hover {
-  background-color: #0ae3f6ce;
+  background-color: #28bc5475;
 }
 
 .chat-wrapper {
