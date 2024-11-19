@@ -1,1 +1,3 @@
- iphone,$2b$12$DiCAazWaS2.S6LElwTzTeOLnNCG3cMeTXnAbuk2esiDruTUxUVjIe
+ iphone,2b$12$DiCAazWaS2.S6LElwTzTeOLnNCG3$cMeTXnAbuk2esiDruTUxUVjIe
+simona,$2b$12$oaPNsk/9UWqa6bFO64ZjK.1rCVTxTCgK/rHvF6MHA6oL8pZeVSU8G
+glasses,$2b$12$7IMdRGX4xklgsR/keCA.9uOpE8bboSv7Oqf7nWQL5kkcJrFwuF.tW

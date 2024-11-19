@@ -12,7 +12,15 @@ const AboutPage = () => {
           className="creator-image"
         />
         <h2>Daniel Hodowanec</h2>
-        <p>Brief bio about Daniel goes here.</p>
+        <p> 
+          I'm a Computer Science major who enjoys HTML & CSS and system security. Simona 
+          and I share an interest in cybersecurity, which is why we built this chat app. It’s more than just a 
+          messaging tool—it’s a way to demonstrate the importance of protecting user data and passwords.
+          </p>
+          <p>
+          Working on this project taught us a lot about integrating technologies, from setting up the front end 
+          to managing authentication.
+        </p>
       </div>
       <div className="creator">
         <img
@@ -21,7 +29,16 @@ const AboutPage = () => {
           className="creator-image"
         />
         <h2>Simona Sellecchia</h2>
-        <p>Brief bio about Simona goes here.</p>
+        <p>
+          I'm a Computer Science major with a passion for cybersecurity. My partner, Daniel, 
+          and I worked together on each aspect of creating this chat app. We wanted to show people how easy it 
+          can be to build a website, but also why user authentication is so important. 
+          </p>
+          <p>
+          For this project, we used a text file (txt) to store usernames and hashed passwords (encrypted with bcrypt). 
+          The cool part? The "salted" hashes make the passwords nearly impossible to guess—even if someone 
+          got access to the file. Unless you're a *really* good hacker, of course!
+        </p>
       </div>
     </div>
   );
