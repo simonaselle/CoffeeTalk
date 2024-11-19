@@ -8,10 +8,10 @@ app = FastAPI()
 # Allow all origins to access the server (frontend -> backend)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173"],  # Update with your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 # File to store the data (user credentials)
@@ -30,10 +30,10 @@ def hash_password(password: str):
 def verifyPassword(password: str, hashed_password: bytes):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
 
-# creating a function to save the user data in the file
+# creating a function to save the user data in the file/ the users.txt file 
 def saveUser(user: User):
-    with open(usersFile, "a") as f: #open the file in append; append mode is used to add the data to the end of the file
-        f.write(f"{user.username},{hash_password(user.password).decode()}\n") # write the username and hashed password in the file
+    with open(usersFile, "a") as f:
+        f.write(f"{user.username},{hash_password(user.password).decode()}\n")
 
 # creating a function to read the user data from the file (authenticating the user)
 def authenticateUser(username: str, password: str):
@@ -52,10 +52,22 @@ def authenticateUser(username: str, password: str):
         return False
     return False
 
+def checkUserExists(username: str):
+    try:
+        with open(usersFile, "r") as f:
+            for line in f:
+                storedUsername, _ = line.strip().split(",")
+                if storedUsername == username:
+                    return True
+    except FileNotFoundError:
+        # No users have been registered yet
+        return False
+    return False
+
 # need a register method to connect to the frontend 
 @app.post("/register")
 async def register(user: User): # register method that takes the user data
-    if authenticateUser(user.username, user.password): # check if the user is already registered
+    if checkUserExists(user.username): # check if the user is already registered
         return {"message": "User already registered"} # if the user is already registered, return a message that the user is already registered
     else:
         saveUser(user) # save the user data in the file
