@@ -37,12 +37,20 @@ def saveUser(user: User):
 
 # creating a function to read the user data from the file (authenticating the user)
 def authenticateUser(username: str, password: str):
-    with open(usersFile, "r") as f: # opening the file in read mode 'r' 
-        for line in f: # iterating through the file 
-            storedUsername, storedHashedPassword = line.strip().split(" ") # reading the user's credentials and splitting with a space 
-            if storedUsername == username and verifyPassword(password, storedHashedPassword.encode()): # check if the username and password match the stored credentials
-                return True # return true if the user is authenticated
-    return False # otherwise return false 
+    try:
+        with open(usersFile, "r") as f:
+            for line in f:
+                try:
+                    storedUsername, storedHashedPassword = line.strip().split(",")
+                    if storedUsername == username and verifyPassword(password, storedHashedPassword.encode()):
+                        return True
+                except ValueError:
+                    # Skip lines that don't have the correct format
+                    continue
+    except FileNotFoundError:
+        # If the file doesn't exist, no users are registered yet
+        return False
+    return False
 
 # need a register method to connect to the frontend 
 @app.post("/register")
