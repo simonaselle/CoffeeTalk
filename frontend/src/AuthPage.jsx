@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const AuthPage = (props) => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate(); // Initialize navigate
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -75,7 +77,11 @@ const AuthPage = (props) => {
             >
               {isRegistering ? 'Back to Login' : 'New User'}
             </button>
-            <button className="about-button" type="button">
+            <button
+              className="about-button"
+              type="button"
+              onClick={() => navigate('/about')} // Navigate to About page
+            >
               About Creators
             </button>
           </div>

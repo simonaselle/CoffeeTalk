@@ -1,0 +1,26 @@
+.about-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.creator {
+  margin: 40px 0;
+}
+
+.creator-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.creator h2 {
+  margin-top: 20px;
+  font-size: 24px;
+}
+
+.creator p {
+  font-size: 16px;
+  max-width: 600px;
+  margin: 10px auto;
+}
