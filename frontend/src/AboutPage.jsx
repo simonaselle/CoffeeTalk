@@ -1,4 +1,5 @@
 import React from 'react';
+import simonaImage from './assets/simona.jpg';
 import './AboutPage.css';
 
 const AboutPage = () => {
@@ -14,15 +15,15 @@ const AboutPage = () => {
               alt="Daniel Hodowanec"
               className="creator-image"
             />
-            <h2>Hi, I'm Daniel Hodowanec</h2>
+            <h2>Hi, I'm Daniel Hodowanec!</h2>
           </div>
           <div className="creator">
             <img
-              src="/assets/simona.jpg"
+              src={simonaImage}
               alt="Simona Sellecchia"
               className="creator-image"
             />
-            <h2>Hi, I'm Simona Sellecchia</h2>
+            <h2>Hi, I'm Simona Sellecchia!</h2>
           </div>
         </div>
 
