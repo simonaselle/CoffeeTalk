@@ -6,6 +6,7 @@
   margin: 50px auto; /* Centers the container horizontally and adds top & bottom margins */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
   border-radius: 8px; /* Rounds the corners for a smoother look */
+  position: relative; /* Establishes a positioning context for the back button */
 }
 
 .about-container h1 {
@@ -65,4 +66,20 @@
   line-height: 1.6;
   text-align: justify;
   color: #666; /* Lighter text color for paragraphs */
+}
+
+/* Back Button Styles */
+.back-button {
+  position: absolute; /* Positions the button relative to .about-container */
+  top: 20px;
+  right: 20px;
+  background: none; /* Removes default button styling */
+  border: none; /* Removes default button border */
+  font-size: 30px; /* Increases emoji size */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  transition: transform 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  transform: scale(1.2); /* Slightly enlarges the button on hover */
 }

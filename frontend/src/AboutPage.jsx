@@ -1,17 +1,30 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+/*import danielImage from './assets/daniel.jpg';*/
 import simonaImage from './assets/simona.jpg';
 import './AboutPage.css';
 
 const AboutPage = () => {
+  const navigate = useNavigate(); // Initialize navigate
+
+  const handleBackClick = () => {
+    navigate('/'); // Navigate to Home Page
+  };
+
   return (
     <div className="about-container">
+      {/* Back Button */}
+      <button className="back-button" onClick={handleBackClick}>
+        🏠
+      </button>
+
       <h1>About the Creators</h1>
       <div className="content">
         {/* Left Column */}
         <div className="left-column">
           <div className="creator">
             <img
-              src="/assets/daniel.jpg"
+              /*src={danielImage}*/
               alt="Daniel Hodowanec"
               className="creator-image"
             />
