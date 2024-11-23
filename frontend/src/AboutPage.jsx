@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-/*import danielImage from './assets/daniel.jpg';*/
+import danielImage from './assets/DanielPenn.jpg';
 import simonaImage from './assets/simona.jpg';
 import './AboutPage.css';
 
@@ -15,7 +15,7 @@ const AboutPage = () => {
     <div className="about-container">
       {/* Back Button */}
       <button className="back-button" onClick={handleBackClick}>
-        🏠
+        🏠Home
       </button>
 
       <h1>About the Creators</h1>
@@ -24,7 +24,7 @@ const AboutPage = () => {
         <div className="left-column">
           <div className="creator">
             <img
-              /*src={danielImage}*/
+              src={danielImage}
               alt="Daniel Hodowanec"
               className="creator-image"
             />
