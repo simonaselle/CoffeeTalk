@@ -86,4 +86,3 @@ To get started with ***Coffee Talk***, simply sign up with a username and passwo
 - [Hashing passwords with Python and Bcrypt](https://www.youtube.com/watch?v=hNa05wr0DSA)
 - [Hashing Passwords in Python with BCrypt](https://www.geeksforgeeks.org/hashing-passwords-in-python-with-bcrypt/)
 - **Duckett, Jon.** *HTML & CSS: Design and Build Websites*. Wiley, 2011. 
-- ***Insert any others if needed***
