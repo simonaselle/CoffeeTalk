@@ -26,10 +26,46 @@ source venv/bin/activate # For Linux/Mac
 venv\Scripts\activate    # For Windows 
 ```
 
+2. **Install Dependencies**
+```bash
+pip install -r requirements.txt 
+```
+
+3. **Ensure users.txt Exists and Has Correct Permissions**
+```bash
+touch users.txt 
+```
+
+4. **Set Permissions**
+```bash
+chmod 666 users.txt
+```
+
+5. **Start the Backend Server**
+```bash
+uvicorn main:app --reload
+```
+---
+***Open another terminal***
+---
+
+#### Terminal 2: Frontend Setup 
+1. **Open a New Terminal and Navigate to the Frontend Directory**
+```bash
+cd CoffeeTalk/frontend 
+```
+
+2. **Install Frontend Dependencies**
+```bash
+npm install 
+```
+
+3. **Start the Frontend Development Server**
+```bash
+npm run dev 
+```
 
 
-
-1. 
 
 ## Usage 
 To get started with ***Coffee Talk***, simply sign up with a username and password to create your account. Once logged in, you'll have access to a web based chat application where you can connect with other users in real time. You will have the ability to create a chat and message with your friends! ***Coffee Talk*** ensures a safe messaging experience, and saved history so you can pick up right where you left off. 
