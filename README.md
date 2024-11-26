@@ -8,8 +8,8 @@
 - CORSMiddleware (handles cross-origin resource sharing) 
 - Socket.IO (Enables real-time communication)
 - Bcrypt Hashing (Provides secure password hashing)
-- GitHub Copilot 
-- ChatGPT 
+- GitHub Copilot (Assisted with development productivity)
+- ChatGPT (Assisted with project outline)
 
 ## Getting Started 
 ### Prerequisites 
@@ -22,7 +22,7 @@ Make sure you have the following installed:
 1. **Navigate to the Backend Directory and Activate the Virtual Environment**
 ```bash
 cd CoffeeTalk/backend 
-source venv/bin/activate # For Linux/Mac 
+source venv/bin/activate # For Linux/macOS 
 venv\Scripts\activate    # For Windows 
 ```
 
@@ -31,28 +31,32 @@ venv\Scripts\activate    # For Windows
 pip install -r requirements.txt 
 ```
 
-3. **Ensure users.txt Exists and Has Correct Permissions**
+3. **Ensure users.txt Exists**
 ```bash
-touch users.txt 
+touch users.txt   # For Linux/macOS
+echo. > users.txt # For Windows
 ```
 
 4. **Set Permissions**
 ```bash
-chmod 666 users.txt
+chmod 666 users.txt # For Linux/macOS
 ```
 
 5. **Start the Backend Server**
 ```bash
 uvicorn main:app --reload
 ```
----
+--- 
+
 ***Open another terminal***
+
 ---
 
 #### Terminal 2: Frontend Setup 
-1. **Open a New Terminal and Navigate to the Frontend Directory**
+1. **Navigate to the Frontend Directory**
 ```bash
-cd CoffeeTalk/frontend 
+cd CoffeeTalk/frontend # For Linux/macOS
+cd CoffeeTalk\frontend # For Windows
 ```
 
 2. **Install Frontend Dependencies**
