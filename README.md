@@ -14,11 +14,22 @@
 ## Getting Started 
 ### Prerequisites 
 Make sure you have the following installed: 
-- Python 3.9+
-- Node.js & npm
+- **Backend**: Python 3.9+ & pip
+- **Frontend**: Node.js & npm
 
-### How to Run the Website on Your Machine 
-***Insert how to do this*** 
+### How to Run the Website on Your Local Machine 
+#### Terminal 1: Backend Setup 
+1. **Navigate to the Backend Directory and Activate the Virtual Environment**
+```bash
+cd CoffeeTalk/backend 
+source venv/bin/activate # For Linux/Mac 
+venv\Scripts\activate    # For Windows 
+```
+
+
+
+
+1. 
 
 ## Usage 
 To get started with ***Coffee Talk***, simply sign up with a username and password to create your account. Once logged in, you'll have access to a web based chat application where you can connect with other users in real time. You will have the ability to create a chat and message with your friends! ***Coffee Talk*** ensures a safe messaging experience, and saved history so you can pick up right where you left off. 
