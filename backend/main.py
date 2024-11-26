@@ -1,30 +1,32 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # Allows cross-origin requests
-from pydantic import BaseModel
-import bcrypt
-import os
-import logging
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  # Handles Cross-Origin Resource Sharing
+from pydantic import BaseModel  # For defining the request and response models meaning we can validate the data
+import bcrypt # For hashing passwords
+import os # For file operations meaning we can read and write to files
+import logging # For logging the events that happen in the backend
+from typing import List 
+from datetime import datetime # For timestamping messages
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Define the path to the file where the user data will be stored
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-usersFile = os.path.join(BASE_DIR, "users.txt")
+# Define the path to the users file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
+usersFile = os.path.join(BASE_DIR, "users.txt") 
 
 app = FastAPI()
 
-# Allow requests from the frontend (adjust the origin if necessary)
+# CORS configuration to allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Update with your frontend URL
+    allow_origins=["http://localhost:5173"],  # Update if your frontend runs on a different URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Define the User model
+# Pydantic model for User
 class User(BaseModel):
     username: str
     password: str
@@ -45,6 +47,7 @@ def saveUser(user: User):
         logger.info(f"User '{user.username}' saved successfully.")
     except Exception as e:
         logger.error(f"Error saving user '{user.username}': {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 # Function to check if a user exists
 def checkUserExists(username: str) -> bool:
@@ -67,8 +70,8 @@ def authenticateUser(username: str, password: str) -> bool:
         with open(usersFile, "r") as f:
             for line in f:
                 try:
-                    storedUsername, storedHashedPassword = line.strip().split(",")
-                    if storedUsername == username and verifyPassword(password, storedHashedPassword.encode('utf-8')):
+                    storedUsername, stored_hashed_password = line.strip().split(",")
+                    if storedUsername == username and verifyPassword(password, stored_hashed_password.encode('utf-8')):
                         return True
                 except ValueError:
                     # Skip lines that don't have the correct format
@@ -86,7 +89,7 @@ async def register(user: User):
     logger.info(f"Registration attempt for user: '{user.username}'")
     if checkUserExists(user.username):
         logger.warning(f"Registration failed: User '{user.username}' already exists.")
-        return {"message": "User already registered"}
+        raise HTTPException(status_code=400, detail="User already registered")
     else:
         saveUser(user)
         logger.info(f"User '{user.username}' registered successfully.")
@@ -101,7 +104,7 @@ async def authenticate(user: User):
         return {"message": f"User '{user.username}' authenticated successfully"}
     else:
         logger.warning(f"Authentication failed for user '{user.username}'")
-        return {"message": "Invalid username or password"}
+        raise HTTPException(status_code=401, detail="Invalid username or password")
 
 # Endpoint to get all registered users (optional)
 @app.get("/users")
@@ -110,11 +113,76 @@ async def get_users():
     try:
         with open(usersFile, "r") as f:
             for line in f:
-                username, _ = line.strip().split(",")
-                users.append(username)
+                try:
+                    username, _ = line.strip().split(",")
+                    users.append(username)
+                except ValueError:
+                    # Skip lines that don't have the correct format
+                    continue
         logger.info("Fetched list of registered users.")
     except FileNotFoundError:
         logger.warning("No users registered yet.")
     except Exception as e:
         logger.error(f"Error fetching users: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
     return {"users": users}
+
+# ----------------------------
+# WebSocket Chat Implementation
+# ----------------------------
+
+class ConnectionManager: # Manages WebSocket connections
+    def __init__(self):
+        self.active_connections: List[WebSocket] = [] # List to store active connections
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+        logger.info(f"New WebSocket connection established. Total connections: {len(self.active_connections)}")
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+        logger.info(f"WebSocket connection closed. Total connections: {len(self.active_connections)}")
+
+    async def broadcast(self, message: dict):
+        logger.info(f"Broadcasting message: {message}")
+        disconnected_websockets = []
+        for connection in self.active_connections:
+            try:
+                await connection.send_json(message)
+            except Exception as e:
+                logger.error(f"Error sending message to a client: {e}")
+                disconnected_websockets.append(connection)
+        for websocket in disconnected_websockets:
+            self.disconnect(websocket)
+
+manager = ConnectionManager() # Create an instance of ConnectionManager meaning we can manage WebSocket connections
+
+@app.websocket("/ws/chat") # WebSocket endpoint for chat stores the WebSocket connection
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_json()
+            username = data.get("username")
+            content = data.get("content")
+            
+            if not username or not content:
+                logger.warning("Received invalid message format.")
+                continue  # Optionally, send an error message back
+            
+            # Generate accurate UTC timestamp in ISO format
+            timestamp = datetime.utcnow().isoformat() + "Z"
+            
+            message = {
+                "username": username,
+                "content": content,
+                "timestamp": timestamp
+            }
+            
+            await manager.broadcast(message)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception as e:
+        logger.error(f"Error in WebSocket communication: {e}")
+        manager.disconnect(websocket)
