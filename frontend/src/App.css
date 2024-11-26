@@ -121,3 +121,24 @@ body {
   border-radius: 8px;
   margin-top: 20px;
 }
+
+/* Home Button Styles */
+.home-button {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+    background-color: #9d9ea1;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    z-index: 1000; /* Ensure the button stays on top */
+}
+
+.home-button:hover {
+    background-color: #28bc54;
+}
