@@ -6,6 +6,7 @@ import os # For file operations meaning we can read and write to files
 import logging # For logging the events that happen in the backend
 from typing import List 
 from datetime import datetime # For timestamping messages
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -14,6 +15,7 @@ logger = logging.getLogger(__name__)
 # Define the path to the users file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
 usersFile = os.path.join(BASE_DIR, "users.txt") 
+messages_file = os.path.join(BASE_DIR, "messages.txt")
 
 app = FastAPI()
 
@@ -158,12 +160,43 @@ class ConnectionManager: # Manages WebSocket connections
 
 manager = ConnectionManager() # Create an instance of ConnectionManager meaning we can manage WebSocket connections
 
+# Function to save a message to the file
+def save_message(message: dict):
+    try:
+        with open(messages_file, "a") as f:
+            f.write(json.dumps(message) + "\n")
+        logger.info(f"Message saved: {message}")
+    except Exception as e:
+        logger.error(f"Error saving message: {e}")
+
+# Function to load all messages
+def load_messages() -> List[dict]:
+    messages = []
+    try:
+        with open(messages_file, "r") as f:
+            for line in f:
+                try:
+                    message = json.loads(line.strip())
+                    messages.append(message)
+                except json.JSONDecodeError:
+                    continue
+        logger.info("Loaded chat history.")
+    except FileNotFoundError:
+        logger.warning("No chat history found.")
+    except Exception as e:
+        logger.error(f"Error loading messages: {e}")
+    return messages
+
 @app.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
+        # Send chat history to the connected client
+        messages = load_messages()
+        for message in messages:
+            await websocket.send_json(message)
+
         while True:
-            # Receive message from a client
             data = await websocket.receive_json()
             username = data.get("username")
             content = data.get("content")
@@ -180,7 +213,13 @@ async def websocket_endpoint(websocket: WebSocket):
                 "timestamp": timestamp
             }
 
+            # Save the message
+            save_message(message)
+
             # Broadcast the message to all connected clients
             await manager.broadcast(message)
     except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception as e:
+        logger.error(f"Error in WebSocket communication: {e}")
         manager.disconnect(websocket)
