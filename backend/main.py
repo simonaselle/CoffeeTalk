@@ -158,31 +158,29 @@ class ConnectionManager: # Manages WebSocket connections
 
 manager = ConnectionManager() # Create an instance of ConnectionManager meaning we can manage WebSocket connections
 
-@app.websocket("/ws/chat") # WebSocket endpoint for chat stores the WebSocket connection
+@app.websocket("/ws/chat")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
         while True:
+            # Receive message from a client
             data = await websocket.receive_json()
             username = data.get("username")
             content = data.get("content")
             
             if not username or not content:
                 logger.warning("Received invalid message format.")
-                continue  # Optionally, send an error message back
-            
-            # Generate accurate UTC timestamp in ISO format
+                continue
+
+            # Create message object with timestamp
             timestamp = datetime.utcnow().isoformat() + "Z"
-            
             message = {
                 "username": username,
                 "content": content,
                 "timestamp": timestamp
             }
-            
+
+            # Broadcast the message to all connected clients
             await manager.broadcast(message)
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-    except Exception as e:
-        logger.error(f"Error in WebSocket communication: {e}")
         manager.disconnect(websocket)
