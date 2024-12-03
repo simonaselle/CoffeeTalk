@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import danielImage from './assets/DanielPenn.jpg';
-import simonaImage from './assets/simona.jpg';
+import simonaImage from './assets/simona2.jpeg';
 import './AboutPage.css';
 
 const AboutPage = () => {
