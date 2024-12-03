@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ChatsPage.css';
+import axios from 'axios'; // Import axios for HTTP requests
 
 const ChatsPage = ({ user }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const ws = useRef(null);
   const navigate = useNavigate();
+  const [usersList, setUsersList] = useState([]);
 
   const messagesEndRef = useRef(null);
 
@@ -39,6 +41,17 @@ const ChatsPage = ({ user }) => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    // Fetch the list of registered users
+    axios.get('http://localhost:8000/users')
+      .then(response => {
+        setUsersList(response.data.users.filter(username => username !== user.username));
+      })
+      .catch(error => {
+        console.error("Error fetching users:", error);
+      });
+  }, [user.username]);
+
   const sendMessage = () => {
     if (input.trim() === '') return;
     const message = {
@@ -65,36 +78,49 @@ const ChatsPage = ({ user }) => {
         🏠 Home
       </button>
 
-      <div className="chat-wrapper">
-        <div className="chat-header">
-          <h2>Welcome, {user.username}!</h2>
+      <div className="chat-container">
+        {/* User List */}
+        <div className="users-list">
+          <h3>Online Users</h3>
+          <ul>
+            {usersList.map((username, idx) => (
+              <li key={idx}>{username}</li>
+            ))}
+          </ul>
         </div>
-        <div className="messages">
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`message ${msg.username === user.username ? 'own-message' : ''}`}
-            >
-              <div className="message-content">
-                <strong>{msg.username}: </strong>
-                <span>{msg.content}</span>
+
+        {/* Chat Interface */}
+        <div className="chat-wrapper">
+          <div className="chat-header">
+            <h2>Welcome, {user.username}!</h2>
+          </div>
+          <div className="messages">
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`message ${msg.username === user.username ? 'own-message' : ''}`}
+              >
+                <div className="message-content">
+                  <strong>{msg.username}: </strong>
+                  <span>{msg.content}</span>
+                </div>
+                <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
               </div>
-              <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-        <div className="input-area">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') sendMessage();
-            }}
-          />
-          <button onClick={sendMessage}>Send</button>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+          <div className="input-area">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message..."
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') sendMessage();
+              }}
+            />
+            <button onClick={sendMessage}>Send</button>
+          </div>
         </div>
       </div>
     </div>

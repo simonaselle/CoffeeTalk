@@ -119,7 +119,6 @@ async def get_users():
                     username, _ = line.strip().split(",")
                     users.append(username)
                 except ValueError:
-                    # Skip lines that don't have the correct format
                     continue
         logger.info("Fetched list of registered users.")
     except FileNotFoundError:
