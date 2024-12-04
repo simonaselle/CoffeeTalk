@@ -72,11 +72,11 @@ const ChatsPage = ({ user }) => {
   };
 
   return (
-      <div className="about-container">
-      {/* Back Button */}
-      <button className="back-button" onClick={handleBackClick}>
-        🏠Home
-      </button>
+    <div className="background">
+    {/* Home Button */}
+    <button className="home-button" onClick={handleHomeClick}>
+      🏠 Home
+    </button>
 
       <div className="chat-container">
         {/* User List */}
