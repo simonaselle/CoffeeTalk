@@ -72,10 +72,10 @@ const ChatsPage = ({ user }) => {
   };
 
   return (
-    <div className="background">
-      {/* Home Button */}
-      <button className="home-button" onClick={handleHomeClick}>
-        🏠 Home
+      <div className="about-container">
+      {/* Back Button */}
+      <button className="back-button" onClick={handleBackClick}>
+        🏠Home
       </button>
 
       <div className="chat-container">
