@@ -1,46 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ChatsPage.css';
-import axios from 'axios'; // Import axios for HTTP requests
+import axios from 'axios';
+import PrivateChat from './PrivateChat'; // Import the PrivateChat component
 
 const ChatsPage = ({ user }) => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const ws = useRef(null);
   const navigate = useNavigate();
   const [usersList, setUsersList] = useState([]);
-  const [selectedRecipient, setSelectedRecipient] = useState(null);
-
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    // Initialize WebSocket connection
-    ws.current = new WebSocket('ws://localhost:8000/ws/chat');
-
-    ws.current.onopen = () => {
-      console.log('WebSocket connected');
-    };
-
-    ws.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
-    };
-
-    ws.current.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
-
-    return () => {
-      ws.current.close();
-    };
-  }, []);
-
-  useEffect(() => {
-    // Scroll to the latest message
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     // Fetch the list of registered users
@@ -53,20 +20,8 @@ const ChatsPage = ({ user }) => {
       });
   }, [user.username]);
 
-  const sendMessage = () => {
-    if (input.trim() === '') return;
-    const message = {
-      username: user.username,
-      content: input,
-      recipient: selectedRecipient,
-    };
-    ws.current.send(JSON.stringify(message));
-    setInput('');
-  };
-
-  const formatTimestamp = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleString(); // Converts UTC to local time
+  const handleUserClick = (username) => {
+    setSelectedUser(username);
   };
 
   const handleHomeClick = () => {
@@ -83,10 +38,10 @@ const ChatsPage = ({ user }) => {
       <div className="chat-container">
         {/* User List */}
         <div className="users-list">
-          <h3>Online Users</h3>
+          <h3>Users</h3>
           <ul>
             {usersList.map((username, idx) => (
-              <li key={idx} onClick={() => setSelectedRecipient(username)}>
+              <li key={idx} onClick={() => handleUserClick(username)}>
                 {username}
               </li>
             ))}
@@ -94,41 +49,13 @@ const ChatsPage = ({ user }) => {
         </div>
 
         {/* Chat Interface */}
-        <div className="chat-wrapper">
-          <div className="chat-header">
-            <h2>Welcome, {user.username}!</h2>
-            <h3>Chatting with: {selectedRecipient}</h3>
+        {selectedUser ? (
+          <PrivateChat user={user} recipient={selectedUser} />
+        ) : (
+          <div className="no-chat-selected">
+            <h2>Select a user to start chatting</h2>
           </div>
-          <div className="messages">
-            {messages
-              .filter((msg) => msg.recipient === user.username || msg.username === user.username)
-              .map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`message ${msg.username === user.username ? 'own-message' : 'other-message'}`}
-                >
-                  <div className="message-content">
-                    <strong>{msg.username}: </strong>
-                    <span>{msg.content}</span>
-                  </div>
-                  <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
-                </div>
-              ))}
-            <div ref={messagesEndRef} />
-          </div>
-          <div className="input-area">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') sendMessage();
-              }}
-            />
-            <button onClick={sendMessage}>Send</button>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
