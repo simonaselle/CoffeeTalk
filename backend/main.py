@@ -1,12 +1,12 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware  # Handles Cross-Origin Resource Sharing
 from pydantic import BaseModel  # For defining the request and response models meaning we can validate the data
 import bcrypt # For hashing passwords
 import os # For file operations meaning we can read and write to files
 import logging # For logging the events that happen in the backend
-from typing import List 
+from typing import List, Dict
 from datetime import datetime # For timestamping messages
-import json
+import json 
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -132,93 +132,112 @@ async def get_users():
 # WebSocket Chat Implementation
 # ----------------------------
 
+# Modify the ConnectionManager to handle rooms
 class ConnectionManager: # Manages WebSocket connections
     def __init__(self):
-        self.active_connections: List[WebSocket] = [] # List to store active connections
+        # Active connections per room
+        self.active_connections: Dict[str, List[WebSocket]] = {}
+        self.online_users: set = set()
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket, room: str, username: str):
         await websocket.accept()
-        self.active_connections.append(websocket)
-        logger.info(f"New WebSocket connection established. Total connections: {len(self.active_connections)}")
+        if room not in self.active_connections:
+            self.active_connections[room] = []
+        self.active_connections[room].append(websocket)
+        self.online_users.add(username)
+        # Send updated online users list to all clients
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-        logger.info(f"WebSocket connection closed. Total connections: {len(self.active_connections)}")
+    def disconnect(self, websocket: WebSocket, room: str, username: str):
+        self.active_connections[room].remove(websocket)
+        if not self.active_connections[room]:
+            del self.active_connections[room]
+        self.online_users.discard(username)
+        # Send updated online users list to all clients
 
-    async def broadcast(self, message: dict):
-        logger.info(f"Broadcasting message: {message}")
+    async def send_personal_message(self, message: dict, websocket: WebSocket):
+        await websocket.send_json(message)
+
+    async def broadcast(self, message: dict, room: str):
+        logger.info(f"Broadcasting message to room '{room}': {message}")
         disconnected_websockets = []
-        for connection in self.active_connections:
+        for connection in self.active_connections.get(room, []):
             try:
                 await connection.send_json(message)
             except Exception as e:
                 logger.error(f"Error sending message to a client: {e}")
                 disconnected_websockets.append(connection)
         for websocket in disconnected_websockets:
-            self.disconnect(websocket)
+            self.disconnect(websocket, room)
 
 manager = ConnectionManager() # Create an instance of ConnectionManager meaning we can manage WebSocket connections
 
-# Function to save a message to the file
-def save_message(message: dict):
+# Function to save a message to the file for a specific room
+def save_message(message: dict, room: str):
     try:
-        with open(messages_file, "a") as f:
+        room_messages_file = os.path.join(BASE_DIR, f"messages_{room}.txt")
+        with open(room_messages_file, "a") as f:
             f.write(json.dumps(message) + "\n")
-        logger.info(f"Message saved: {message}")
+        logger.info(f"Message saved in room '{room}': {message}")
     except Exception as e:
-        logger.error(f"Error saving message: {e}")
+        logger.error(f"Error saving message in room '{room}': {e}")
 
-# Function to load all messages
-def load_messages() -> List[dict]:
+# Function to load all messages for a specific room
+def load_messages(room: str) -> List[dict]:
     messages = []
+    room_messages_file = os.path.join(BASE_DIR, f"messages_{room}.txt")
     try:
-        with open(messages_file, "r") as f:
+        with open(room_messages_file, "r") as f:
             for line in f:
                 try:
                     message = json.loads(line.strip())
                     messages.append(message)
                 except json.JSONDecodeError:
                     continue
-        logger.info("Loaded chat history.")
+        logger.info(f"Loaded chat history for room '{room}'.")
     except FileNotFoundError:
-        logger.warning("No chat history found.")
+        logger.warning(f"No chat history found for room '{room}'.")
     except Exception as e:
-        logger.error(f"Error loading messages: {e}")
+        logger.error(f"Error loading messages for room '{room}': {e}")
     return messages
 
-@app.websocket("/ws/chat")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
+# WebSocket endpoint for private messaging with query parameter 'room'
+@app.websocket("/ws/chat/{recipient}")
+async def websocket_endpoint(websocket: WebSocket, recipient: str, username: str = Query(...)):
+    room = "_".join(sorted([username, recipient]))  # Unique room ID for the conversation
+    await manager.connect(websocket, room, username)
     try:
-        # Send chat history to the connected client
-        messages = load_messages()
+        # Load and send chat history for this room
+        messages = load_messages(room)
         for message in messages:
             await websocket.send_json(message)
 
         while True:
             data = await websocket.receive_json()
-            username = data.get("username")
             content = data.get("content")
-            
-            if not username or not content:
+
+            if not content:
                 logger.warning("Received invalid message format.")
                 continue
 
-            # Create message object with timestamp
             timestamp = datetime.utcnow().isoformat() + "Z"
             message = {
                 "username": username,
                 "content": content,
-                "timestamp": timestamp
+                "timestamp": timestamp,
+                "recipient": recipient
             }
 
-            # Save the message
-            save_message(message)
+            # Save the message to file
+            save_message(message, room)
 
-            # Broadcast the message to all connected clients
-            await manager.broadcast(message)
+            # Broadcast the message to this room
+            await manager.broadcast(message, room)
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        manager.disconnect(websocket, room, username)
     except Exception as e:
         logger.error(f"Error in WebSocket communication: {e}")
-        manager.disconnect(websocket)
+        manager.disconnect(websocket, room, username)
+
+@app.get("/online-users")
+async def get_online_users():
+    return {"online_users": list(manager.online_users)}
