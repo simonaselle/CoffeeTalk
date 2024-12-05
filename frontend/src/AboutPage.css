@@ -1,0 +1,85 @@
+.about-container {
+  padding: 40px; /* Increased padding for better spacing */
+  font-family: Arial, sans-serif;
+  background-color: rgba(225, 225, 222, 0.95); /* Off-white background with slight transparency */
+  max-width: 1200px; /* Sets a maximum width to prevent stretching */
+  margin: 50px auto; /* Centers the container horizontally and adds top & bottom margins */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+  border-radius: 8px; /* Rounds the corners for a smoother look */
+  position: relative; /* Establishes a positioning context for the back button */
+}
+
+.about-container h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333; /* Darker text for better readability */
+}
+
+.content {
+  display: flex;
+  align-items: stretch; /* Ensure both columns stretch to the same height */
+}
+
+/* Left Column Styles */
+.left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+}
+
+.creator {
+  margin-bottom: 40px;
+}
+
+.creator-image {
+  width: 170px;
+  height: 200px; 
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover;
+  border: 4px solid #ccc; /* Adds a light border around the images */
+}
+
+.creator h2 {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #555; /* Slightly lighter text color */
+}
+
+/* Right Column Styles */
+.right-column {
+  flex: 2;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the content */
+}
+
+.app-info h2 {
+  margin-bottom: 20px;
+  color: #333; /* Darker heading for better readability */
+}
+
+.app-info p {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: justify;
+  color: #666; /* Lighter text color for paragraphs */
+}
+
+/* Back Button Styles */
+.back-button {
+  position: absolute; /* Positions the button relative to .about-container */
+  top: 20px;
+  right: 20px;
+  background: none; /* Removes default button styling */
+  border: none; /* Removes default button border */
+  font-size: 30px; /* Increases emoji size */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  transition: transform 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  transform: scale(1.2); /* Slightly enlarges the button on hover */
+}
