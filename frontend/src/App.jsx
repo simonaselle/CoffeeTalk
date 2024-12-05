@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './AuthPage';
 import ChatsPage from './ChatsPage';
-import AboutPage from './AboutPage'; // Import the AboutPage component
+import AboutPage from './AboutPage'; // Decide to keep this import
 import LoginForm from './LoginForm';
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(null);
+
 
   return (
     <Router>
@@ -21,5 +22,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;
