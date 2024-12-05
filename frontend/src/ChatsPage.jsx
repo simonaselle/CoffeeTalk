@@ -9,6 +9,7 @@ const ChatsPage = ({ user }) => {
   const ws = useRef(null);
   const navigate = useNavigate();
   const [usersList, setUsersList] = useState([]);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
 
   const messagesEndRef = useRef(null);
 
@@ -57,6 +58,7 @@ const ChatsPage = ({ user }) => {
     const message = {
       username: user.username,
       content: input,
+      recipient: selectedRecipient,
     };
     ws.current.send(JSON.stringify(message));
     setInput('');
@@ -73,10 +75,10 @@ const ChatsPage = ({ user }) => {
 
   return (
     <div className="background">
-    {/* Home Button */}
-    <button className="home-button" onClick={handleHomeClick}>
-      🏠 Home
-    </button>
+      {/* Home Button */}
+      <button className="home-button" onClick={handleHomeClick}>
+        🏠 Home
+      </button>
 
       <div className="chat-container">
         {/* User List */}
@@ -84,7 +86,9 @@ const ChatsPage = ({ user }) => {
           <h3>Online Users</h3>
           <ul>
             {usersList.map((username, idx) => (
-              <li key={idx}>{username}</li>
+              <li key={idx} onClick={() => setSelectedRecipient(username)}>
+                {username}
+              </li>
             ))}
           </ul>
         </div>
@@ -93,20 +97,23 @@ const ChatsPage = ({ user }) => {
         <div className="chat-wrapper">
           <div className="chat-header">
             <h2>Welcome, {user.username}!</h2>
+            <h3>Chatting with: {selectedRecipient}</h3>
           </div>
           <div className="messages">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`message ${msg.username === user.username ? 'own-message' : ''}`}
-              >
-                <div className="message-content">
-                  <strong>{msg.username}: </strong>
-                  <span>{msg.content}</span>
+            {messages
+              .filter((msg) => msg.recipient === user.username || msg.username === user.username)
+              .map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`message ${msg.username === user.username ? 'own-message' : 'other-message'}`}
+                >
+                  <div className="message-content">
+                    <strong>{msg.username}: </strong>
+                    <span>{msg.content}</span>
+                  </div>
+                  <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
                 </div>
-                <div className="timestamp">{formatTimestamp(msg.timestamp)}</div>
-              </div>
-            ))}
+              ))}
             <div ref={messagesEndRef} />
           </div>
           <div className="input-area">
