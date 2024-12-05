@@ -1,9 +1,2 @@
-iphone,2b$12$DiCAazWaS2.S6LElwTzTeOLnNCG3$cMeTXnAbuk2esiDruTUxUVjIe
 simona,$2b$12$oaPNsk/9UWqa6bFO64ZjK.1rCVTxTCgK/rHvF6MHA6oL8pZeVSU8G
-glasses,$2b$12$7IMdRGX4xklgsR/keCA.9uOpE8bboSv7Oqf7nWQL5kkcJrFwuF.tW
-Elizabeth,$2b$12$f.1LyoN/2v3O3ECufLgyE.MWr4osml4bcw7QsiCLI/ska7wA9dFIG
-lynn,$2b$12$7dcqNXGe4ize54vbFy4HRuhkvmT9t6JHGRMgAO35KMR39ZXt5aL3u
-phil,$2b$12$dZEYJ7lzT6swQqLRzAa8NObUVyyjJZR0L69b8DrqLSVW15JZEnjrG
-annalisa,$2b$12$/N7l0SZZoPSk6kz7W/ppeuiE4QcTgO1nWLXJxw/CB3cZlfVc3A4QG
 daniel,$2b$12$UjSbeIqwQsyArmiwH8557.n3SavMD1EtrNGV6uWmw.X4k87hXy4uG
-ford,$2b$12$ZvUCoqAJINx9Tq06NJ9Y7Olkuz6q.Ibpv.DnMd9lXNIy0D4kZ1Odu
