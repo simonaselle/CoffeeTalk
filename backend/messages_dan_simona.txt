@@ -1,2 +1,0 @@
-{"username": "dan", "content": "hi!", "timestamp": "2024-12-06T05:07:50.585913Z", "recipient": "simona"}
-{"username": "simona", "content": "HEYY!", "timestamp": "2024-12-06T05:08:04.002272Z", "recipient": "dan"}

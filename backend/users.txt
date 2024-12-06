@@ -1,4 +1,1 @@
 simona,$2b$12$oaPNsk/9UWqa6bFO64ZjK.1rCVTxTCgK/rHvF6MHA6oL8pZeVSU8G
-daniel,$2b$12$UjSbeIqwQsyArmiwH8557.n3SavMD1EtrNGV6uWmw.X4k87hXy4uGmaddie,$2b$12$9c5OVSPG6vz1eMwmtiyqUuA/TRwVe7M5z40fYGARsC2Q5zCezGdHi
-maddie,$2b$12$jVumsBss0t1cpmc68sgOn.XbLOvfSpS1CsIdjPcj/QBrAFIwul0je
-dan,$2b$12$URKrBbSoI1sZ8uqV2CmdDe3CW9TIVvnIsLJdVYodudpvNvcqmg4Ey
