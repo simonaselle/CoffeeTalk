@@ -13,7 +13,7 @@
 /* Chat header styling */
 .chat-header {
     background-color: #ffffff;
-    padding: 15px 20px;
+    padding: 20px 20px;
     border-bottom: 1px solid #ddd;
     display: flex;
     align-items: center;
@@ -22,7 +22,7 @@
 }
 
 .chat-header h2 {
-    font-size: 18px;
+    font-size: 20px;
     color: #333;
 }
 
@@ -37,7 +37,7 @@
 /* Messages container */
 .messages {
     flex: 1;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
     background-color: #e5ddd5; /* iPhone chat background */
 }
@@ -46,8 +46,8 @@
 .message {
     max-width: 70%;
     margin-bottom: 15px;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 30px 20px;
+    border-radius: 30px;
     position: relative;
     word-wrap: break-word;
     display: flex;
@@ -56,17 +56,24 @@
 
 /* Own messages */
 .own-message {
-    background-color: #dcf8c6;
+    background-color: #dcf8c6; /* Light green background */
     align-self: flex-end;
     border-bottom-right-radius: 0;
+    /* Increase size if needed */
+    max-width: 85% !important;
+    padding: 20px 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Other user's messages */
 .other-message {
-    background-color: #ffffff;
+    background-color: #ffffff; /* White background */
     align-self: flex-start;
     border-bottom-left-radius: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    /* Add padding to create bubble effect */
+    padding: 15px 20px;
+    max-width: 80% !important;
 }
 
 /* Message content */
@@ -78,7 +85,7 @@
 
 /* Timestamp styling */
 .timestamp {
-    font-size: 12px;
+    font-size: 8px;
     color: #999;
     align-self: flex-end;
 }

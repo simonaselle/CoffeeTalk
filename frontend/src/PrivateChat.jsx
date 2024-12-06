@@ -59,7 +59,7 @@ const PrivateChat = ({ user, recipient }) => {
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`message ${msg.username === user.username ? 'own-message' : ''}`}
+            className={`message ${msg.username === user.username ? 'own-message' : 'other-message'}`}
           >
             <div className="message-content">
               <strong>{msg.username}: </strong>
