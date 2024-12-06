@@ -1,7 +1,7 @@
 # Coffee Talk: Messaging System 
 ---
 ## Project Overview 
-***Coffee Talk*** is a real-time web based chat application. This project was designed to provide a private messaging platform where users can communicate via messaging system with one another.
+***Coffee Talk*** is a real-time, web-based chat application. It allows users to exchange messages with one another and provides a backend demonstration of how Bcrypt-hashed password is represented in plain text.
 
 ## Built With
 - FastAPI (Web framework for building APIs with Python) 
@@ -73,15 +73,16 @@ npm run dev
 
 
 ## Usage 
-Open your preferred web browser and click the link provided to you in the frontend terminal. Register a new account(if you don't have one already) by clikcing on the "New User" button. Here, you will create a username (how you would like your name displayed to other users) and a password. 
+Open your preferred web browser and click the link provided to you in the frontend terminal. Register a new account (if you don't have one already) by clicking on the "New User" button. Here, you will create a username (how you would like your name displayed to other users) and a password. 
 
 Once logged in, you'll have access to a web based chat application where you can connect with other users in real time. You will have the ability to create a chat and message with your friends! ***Coffee Talk*** ensures a safe messaging experience, and saved history so you can pick up right where you left off. 
 
 
 ## Credits 
 1. **Group Members**:
+- Simona Sellecchia
 - Daniel Hodowanec
-- Simona Sellecchia 
+
 2. **Resources**: 
 - [Adam La Morre's Python Realtime Chat](https://www.youtube.com/watch?v=YDZPp0EnzEA)
 - [CORS (Cross-Origin Resource Sharing)](https://fastapi.tiangolo.com/tutorial/cors/#use-corsmiddleware)
