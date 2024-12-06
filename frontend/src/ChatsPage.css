@@ -36,14 +36,14 @@
     flex-direction: row; /* Change from column to row */
     background-color: #fff;
     overflow: hidden;
-    border-radius: 10px; /* Optional: Add rounded corners */
+    border-radius: 5px; /* Optional: Add rounded corners */
 }
 
 /* Users list styling */
 .users-list {
     width: 100px; /* Set a fixed width */
     background-color: #2e2f3a;
-    padding: 20px;
+    padding: 40px;
     color: rgb(239, 229, 229);
     overflow-y: auto;
 }
@@ -69,7 +69,7 @@
     width: 600px; /* Set a fixed width */
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 10px;
     color: white;
     background-color: #1e1e1e; /* Optional: Set a background color */
 }
