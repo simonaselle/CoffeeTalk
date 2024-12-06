@@ -50,8 +50,8 @@
     border-radius: 20px;
     position: relative;
     word-wrap: break-word;
-    animation: fadeIn 0.3s ease-in-out forwards;
-    opacity: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Own messages */
@@ -73,14 +73,14 @@
 .message-content {
     font-size: 16px;
     color: #333;
+    margin-bottom: 5px;
 }
 
 /* Timestamp styling */
 .timestamp {
     font-size: 12px;
     color: #999;
-    margin-top: 5px;
-    text-align: right;
+    align-self: flex-end;
 }
 
 /* Input area styling */
@@ -93,16 +93,17 @@
 
 .input-area input {
     flex: 1;
-    padding: 10px 15px;
+    padding: 15px 20px;
     border: 1px solid #ddd;
     border-radius: 20px;
     font-size: 16px;
     outline: none;
+    height: 50px; /* Increased height for better readability */
 }
 
 .input-area button {
     margin-left: 10px;
-    padding: 10px 20px;
+    padding: 15px 25px;
     background-color: #007AFF;
     color: white;
     border: none;

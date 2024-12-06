@@ -1,1 +1,3 @@
 {"username": "simona", "content": "hello ", "timestamp": "2024-12-06T04:10:34.651812Z", "recipient": "maddie"}
+{"username": "simona", "content": "hello!", "timestamp": "2024-12-06T04:41:14.713816Z", "recipient": "maddie"}
+{"username": "simona", "content": "hi!", "timestamp": "2024-12-06T04:42:26.647760Z", "recipient": "maddie"}
