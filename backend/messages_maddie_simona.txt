@@ -2,3 +2,5 @@
 {"username": "simona", "content": "hello!", "timestamp": "2024-12-06T04:41:14.713816Z", "recipient": "maddie"}
 {"username": "simona", "content": "hi!", "timestamp": "2024-12-06T04:42:26.647760Z", "recipient": "maddie"}
 {"username": "maddie", "content": "hello ", "timestamp": "2024-12-06T04:55:30.363128Z", "recipient": "simona"}
+{"username": "simona", "content": "HI!", "timestamp": "2024-12-06T05:06:48.411187Z", "recipient": "maddie"}
+{"username": "maddie", "content": "HELLO!", "timestamp": "2024-12-06T05:07:00.464971Z", "recipient": "simona"}
